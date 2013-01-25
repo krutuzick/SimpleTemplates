@@ -2,7 +2,6 @@
 require_once(dirname(__FILE__) . "/source/application.php");
 
 try {
-//
     $application = application::getInstance(dirname(__FILE__) . "/config/config.xml");
     $application->init();
     $handler_factory = $application->getHandlerFactory();
