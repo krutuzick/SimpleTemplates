@@ -1,4 +1,4 @@
-<?php asd
+<?php
 use simtpl\application;
 use simtpl\exception;
 
