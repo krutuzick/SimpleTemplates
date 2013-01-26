@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-class exception_base
-{
+class exception_base {
 
 }

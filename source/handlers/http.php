@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-class handler_http
-{
+class handler_http {
 
 }

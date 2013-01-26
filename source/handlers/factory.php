@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-class handler_factory
-{
+class handler_factory {
 
 }

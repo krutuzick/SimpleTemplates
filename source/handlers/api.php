@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-class handler_api
-{
+class handler_api {
 
 }

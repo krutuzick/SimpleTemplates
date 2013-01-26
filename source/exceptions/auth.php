@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-class exception_auth
-{
+class exception_auth {
 
 }

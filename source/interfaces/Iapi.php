@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-interface Iapi
-{
+interface Iapi {
 
 }

@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-interface Iexception
-{
+interface Iexception {
 
 }

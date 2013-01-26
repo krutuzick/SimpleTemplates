@@ -6,7 +6,6 @@
  * Time: 10:29
  * To change this template use File | Settings | File Templates.
  */
-interface Ihandler
-{
+interface Ihandler {
 
 }

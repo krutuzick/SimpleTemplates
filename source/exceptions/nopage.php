@@ -2,7 +2,6 @@
 /**
  * @todo write phpDoc
  */
-class exception_nopage
-{
+class exception_nopage {
 
 }

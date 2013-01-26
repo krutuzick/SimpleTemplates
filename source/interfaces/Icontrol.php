@@ -1,6 +1,5 @@
 <?php
 
-interface Icontrol
-{
+interface Icontrol {
 
 }
