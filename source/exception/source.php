@@ -2,8 +2,10 @@
 namespace simtpl\exceptions;
 
 /**
- * @todo write phpDoc
+ * @todo phpDoc
  */
-class auth extends base {
+class source extends base {
 
 }
+
+?>

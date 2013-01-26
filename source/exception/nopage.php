@@ -1,5 +1,5 @@
 <?php
-namespace simtpl\exception;
+namespace simtpl\exceptions;
 
 /**
  * @todo write phpDoc

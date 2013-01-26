@@ -1,6 +1,8 @@
 <?php
 namespace simtpl\interfaces;
 
-interface Icontrol {
+interface Ihandler_factory {
 
 }
+
+?>

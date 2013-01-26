@@ -3,9 +3,27 @@ namespace simtpl;
 
 class application {
 
+	const CONFIG_XPATH_HANDLER_FACTORY = "/config/handler/factory";
+
+	/**
+	 * @var string Path to config.xml
+	 */
 	protected $config_path;
 
+	/**
+	 * @var \SimpleXMLElement Parsed config.xml
+	 */
+	protected $configXML;
+
+	/**
+	 * @var array Application instances collection
+	 */
 	protected static $instances = array();
+
+	/**
+	 * @var
+	 */
+	protected $handler_factory = null;
 
 	/**
 	 * @param string $config_path
@@ -54,7 +72,21 @@ class application {
 		clearstatcache();
 		\spl_autoload_register(__NAMESPACE__ . '\application::class_loader');
 		if(!file_exists($this->config_path)) {
-			throw new exception\noconfig("Configuration not found: {$this->config_path}");
+			throw new exceptions\invalidconfig("Configuration not found: {$this->config_path}");
+		} elseif(!simplexml_load_file($this->config_path)) {
+			throw new exceptions\invalidconfig("Failed to parse configuration: {$this->config_path}");
 		}
 	}
+
+	public function getHandlerFactory() {
+		$handlerName = $this->configXML->xpath(self::CONFIG_XPATH_HANDLER_FACTORY);
+		if(!$handlerName || count($handlerName) != 0) {
+			throw new exceptions\invalidconfig("Invalid configuration: incorrect or absent handler_factory");
+		}
+		if(!class_exists((string)$handlerName[0])) {
+			throw new exceptions\source("Handler factory class ({$handlerName[0]}) not exists");
+		}
+
+	}
+
 }

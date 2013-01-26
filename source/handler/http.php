@@ -1,7 +1,9 @@
 <?php
+namespace simtpl\handlers;
+
 /**
  * @todo write phpDoc
  */
-class handler_http {
+class http {
 
 }
