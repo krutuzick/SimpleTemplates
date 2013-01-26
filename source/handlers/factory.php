@@ -36,16 +36,20 @@ class factory implements interfaces\Ihandler_factory {
 	/**
 	 * @param string $type Request type name - constant from \simtpl\handlers\factory
 	 * @throws \simtpl\exceptions\nohandler
-	 * @return \simtpl\interfaces\Ihandler
+	 * @return \simtpl\handlers\base
 	 */
 	public function getHandler($type = null) {
 		$request_type = (is_null($type)) ? $this->getRequestType() : $type;
-		switch($request_type) {
-			case self::REQUEST_TYPE_API: return new api();
-			case self::REQUEST_TYPE_HTTP: return new http();
-			case self::REQUEST_TYPE_CONSOLE: return new cli();
-			default: throw new exceptions\nohandler("Unknown request type: {$request_type}");
+		if(!$request_type) {
+			throw new exceptions\nohandler("Unknown request type: {$request_type}");
 		}
+		$handler_name = $this->configuration->getHandlerName($request_type);
+		$handler_class = __NAMESPACE__ . "\\" . $handler_name;
+		$handler = new $handler_class($this->configuration);
+		if($handler instanceof base == false) {
+			throw new exceptions\nohandler("Handler {$handler_class} is not instance of " . __NAMESPACE__ . "\\base");
+		}
+		return $handler;
 	}
 
 	/**
@@ -84,8 +88,8 @@ class factory implements interfaces\Ihandler_factory {
 		if(isset($_SERVER['REQUEST_URI'])) {
 			$api_url_part = $this->configuration->getApiUrlPart();
 			$script_url = array_shift(explode('?', $_SERVER['REQUEST_URI']));
-			$url_parts = explode('/', trim($script_url, '/'));
-			return ($api_url_part == array_shift($url_parts));
+			$script_url = trim($script_url, "/") . "/";
+			return (strpos($script_url, $api_url_part) === 0);
 		}
 		return false;
 	}

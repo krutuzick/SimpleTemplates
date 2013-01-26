@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-
+	<handler>
+		<factory>factory</factory>
+		<api>api</api>
+		<http>http</http>
+		<cli>cli</cli>
+	</handler>
+	<api>
+		<url>api</url>
+	</api>
 </config>

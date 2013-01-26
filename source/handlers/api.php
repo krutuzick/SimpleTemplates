@@ -4,6 +4,9 @@ namespace simtpl\handlers;
 /**
  * @todo write phpDoc
  */
-class api {
+class api extends base {
 
+	public function handle() {
+		// TODO: Implement handle() method.
+	}
 }

@@ -61,17 +61,14 @@ class application {
 	 * @throws exceptions\invalidconfig
 	 */
 	public function getHandlerFactory() {
-		$handler_name = $this->configuration->getHandlerFactoryName();
-		if(!class_exists((string)$handler_name[0])) {
-			throw new exceptions\source("Handler factory class ({$handler_name[0]}) not exists");
+		$handler_factory_name = $this->configuration->getHandlerFactoryName();
+		$handler_factory_class = __NAMESPACE__ . "\\handlers\\" . $handler_factory_name;
+		if(!class_exists($handler_factory_class)) {
+			throw new exceptions\source("Handler factory class ({$handler_factory_class}) not exists");
 		}
-		$handler_class_name = __NAMESPACE__ . "\\handlers\\" . (string)$handler_name[0];
-		if(!is_subclass_of($handler_class_name, "\\interfaces\\Ihandler_factory")) {
-			throw new exceptions\source("Handler factory class ($handler_name[0]) is not implements interface ". __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
-		}
-		$handler_factory = \call_user_func(__NAMESPACE__ . "\\handlers\\" . (string)$handler_name[0] . "::getInstance", $this->configuration);
+		$handler_factory = $handler_factory_class::getInstance($this->configuration);
 		if($handler_factory instanceof interfaces\Ihandler_factory == false) {
-			throw new exceptions\source("$handler_class_name::getInstance() does not returns instance of " . __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
+			throw new exceptions\source("$handler_factory_class::getInstance() does not returns instance of " . __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
 		}
 		return $handler_factory;
 	}

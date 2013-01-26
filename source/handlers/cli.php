@@ -4,8 +4,11 @@ namespace simtpl\handlers;
 /**
  * @todo phpDoc
  */
-class cli {
+class cli extends base {
 
+	public function handle() {
+		// TODO: Implement handle() method.
+	}
 }
 
 ?>
