@@ -3,27 +3,15 @@ namespace simtpl;
 
 class application {
 
-	const CONFIG_XPATH_HANDLER_FACTORY = "/config/handler/factory";
-
 	/**
-	 * @var string Path to config.xml
+	 * @var \simtpl\configuration Configuration object
 	 */
-	protected $config_path;
-
-	/**
-	 * @var \SimpleXMLElement Parsed config.xml
-	 */
-	protected $configXML;
+	protected $configuration;
 
 	/**
 	 * @var array Application instances collection
 	 */
 	protected static $instances = array();
-
-	/**
-	 * @var
-	 */
-	protected $handler_factory = null;
 
 	/**
 	 * @param string $config_path
@@ -40,7 +28,9 @@ class application {
 	 * Overloaded protected constructor - singleton design pattern
 	 */
 	protected function __construct($config_path) {
-		$this->config_path = $config_path;
+		clearstatcache();
+		\spl_autoload_register(__NAMESPACE__ . '\application::class_loader');
+		$this->configuration = new configuration($config_path);
 	}
 
 	/**
@@ -66,27 +56,24 @@ class application {
 	}
 
 	/**
-	 * Load configuration and init application instance
+	 * @return \simtpl\interfaces\Ihandler_factory Handlers factory
+	 * @throws exceptions\source
+	 * @throws exceptions\invalidconfig
 	 */
-	public function init() {
-		clearstatcache();
-		\spl_autoload_register(__NAMESPACE__ . '\application::class_loader');
-		if(!file_exists($this->config_path)) {
-			throw new exceptions\invalidconfig("Configuration not found: {$this->config_path}");
-		} elseif(!simplexml_load_file($this->config_path)) {
-			throw new exceptions\invalidconfig("Failed to parse configuration: {$this->config_path}");
-		}
-	}
-
 	public function getHandlerFactory() {
-		$handlerName = $this->configXML->xpath(self::CONFIG_XPATH_HANDLER_FACTORY);
-		if(!$handlerName || count($handlerName) != 0) {
-			throw new exceptions\invalidconfig("Invalid configuration: incorrect or absent handler_factory");
+		$handler_name = $this->configuration->getHandlerFactoryName();
+		if(!class_exists((string)$handler_name[0])) {
+			throw new exceptions\source("Handler factory class ({$handler_name[0]}) not exists");
 		}
-		if(!class_exists((string)$handlerName[0])) {
-			throw new exceptions\source("Handler factory class ({$handlerName[0]}) not exists");
+		$handler_class_name = __NAMESPACE__ . "\\handlers\\" . (string)$handler_name[0];
+		if(!is_subclass_of($handler_class_name, "\\interfaces\\Ihandler_factory")) {
+			throw new exceptions\source("Handler factory class ($handler_name[0]) is not implements interface ". __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
 		}
-
+		$handler_factory = \call_user_func(__NAMESPACE__ . "\\handlers\\" . (string)$handler_name[0] . "::getInstance", $this->configuration);
+		if($handler_factory instanceof interfaces\Ihandler_factory == false) {
+			throw new exceptions\source("$handler_class_name::getInstance() does not returns instance of " . __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
+		}
+		return $handler_factory;
 	}
 
 }
