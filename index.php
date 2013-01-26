@@ -1,7 +1,7 @@
 <?php
 use simtpl\application;
 use simtpl\exceptions;
-file_put_contents("Z:\\tempotempo.txt", print_r($_SERVER, true) . PHP_EOL, FILE_APPEND);
+
 require_once(dirname(__FILE__) . "/source/application.php");
 
 try {
