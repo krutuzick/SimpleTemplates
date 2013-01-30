@@ -2,13 +2,17 @@
 namespace simtpl;
 
 /**
- * @todo phpDoc
+ * XML configuration worker
  */
 class configuration {
 
 	const CONFIG_XPATH_HANDLER_ROOT = "/config/handler";
 	const CONFIG_XPATH_HANDLER_FACTORY = "/config/handler/factory";
 	const CONFIG_XPATH_API_URL_PART = "/config/api/url";
+	const CONFIG_XPATH_TEMPLATES_INDEX = "/config/templates/index";
+	const CONFIG_XPATH_TEMPLATES_PAGESFOLDER = "/config/templates/pagesfolder";
+	const CONFIG_XPATH_TEMPLATES_AUTOCOMPRESS = "/config/templates/autocompress";
+	const CONFIG_XPATH_STRUCTURE = "/config/structure";
 
 	/**
 	 * @var string Path to config.xml
@@ -19,6 +23,11 @@ class configuration {
 	 * @var \SimpleXMLElement Parsed config.xml
 	 */
 	protected $configXML;
+
+	/**
+	 * @var array Array of \SimpleXMLElement representing pages tree structure
+	 */
+	protected $structure = null;
 
 	/**
 	 * @param string $config_path Path to config.xml
@@ -74,6 +83,37 @@ class configuration {
 		return (string)$handler_name[0];
 	}
 
+	/**
+	 * @return bool Resources autocompress enabled
+	 */
+	public function getIsResourcesAutocompress() {
+		$autocompress = $this->configXML->xpath(self::CONFIG_XPATH_TEMPLATES_AUTOCOMPRESS);
+		if(!$autocompress) return false;
+		return ((string)$autocompress[0] == "1");
+	}
+
+	/**
+	 * @return array Array of \SimpleXMLElement representing pages tree structure
+	 * @throws exceptions\invalidconfig
+	 */
+	public function getStructure() {
+		if(is_null($this->structure)) {
+			$structure = $this->configXML->xpath(self::CONFIG_XPATH_STRUCTURE);
+			if(!$structure || count($structure) != 1) {
+				throw new exceptions\invalidconfig("Invalid configuration: incorrect or absent structure");
+			}
+			$structureNode = $structure[0];
+			$pages = $structureNode->xpath(page::CONFIG_NODE_NAME);
+			if(count($pages) == 0) {
+				throw new exceptions\invalidconfig("Invalid configuration: not a single page defined in structure");
+			}
+			$this->structure = array();
+			foreach($pages as $pageNode) {
+				$this->structure[] = new page($pageNode, array());
+			}
+		}
+		return $this->structure;
+	}
 
 }
 

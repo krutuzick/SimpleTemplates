@@ -26,23 +26,29 @@
 			<template />
 			<cssclass />
 			<resources>
-				<js />
-				<css />
+				<js>
+					<item />
+					<item />
+				</js>
+				<css>
+					<item />
+					<item />
+				</css>
 			</resources>
-			<childs />
+			<children />
 		</page>
 		<page name="controls">
 			<meta />
 			<caption>Контролы</caption>
 			<redirect>/controls/help/</redirect>
-			<childs>
+			<children>
 				<page name="help">
 					<caption>Описание</caption>
 				</page>
 				<page name="demo">
 					<caption>Примеры</caption>
 				</page>
-			</childs>
+			</children>
 		</page>
 	</structure>
 </config>
