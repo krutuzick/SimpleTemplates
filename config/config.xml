@@ -9,4 +9,40 @@
 	<api>
 		<url>api</url>
 	</api>
+	<templates>
+		<index>page.php</index>
+		<pagesfolder>pages</pagesfolder>
+		<autocompress>1</autocompress>
+	</templates>
+	<structure>
+		<page index="1" name="main">
+			<meta>
+				<title />
+				<description />
+				<keywords />
+			</meta>
+			<caption>Главная</caption>
+			<redirect />
+			<template />
+			<cssclass />
+			<resources>
+				<js />
+				<css />
+			</resources>
+			<childs />
+		</page>
+		<page name="controls">
+			<meta />
+			<caption>Контролы</caption>
+			<redirect>/controls/help/</redirect>
+			<childs>
+				<page name="help">
+					<caption>Описание</caption>
+				</page>
+				<page name="demo">
+					<caption>Примеры</caption>
+				</page>
+			</childs>
+		</page>
+	</structure>
 </config>
