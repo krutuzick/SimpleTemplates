@@ -93,7 +93,7 @@ class configuration {
 	}
 
 	/**
-	 * @return array Array of \SimpleXMLElement representing pages tree structure
+	 * @return array Array of \simtpl\page representing pages tree structure
 	 * @throws exceptions\invalidconfig
 	 */
 	public function getStructure() {
@@ -109,10 +109,35 @@ class configuration {
 			}
 			$this->structure = array();
 			foreach($pages as $pageNode) {
-				$this->structure[] = new page($pageNode, array());
+				$page_parents = array();
+				$this->structure[] = new page($pageNode, $page_parents);
 			}
 		}
 		return $this->structure;
+	}
+
+	/**
+	 * @return string Templates index file
+	 * @throws exceptions\invalidconfig
+	 */
+	public function getIndexTemplate() {
+		$index_template = $this->configXML->xpath(self::CONFIG_XPATH_TEMPLATES_INDEX);
+		if(!$index_template) {
+			throw new exceptions\invalidconfig("Invalid configuration: templates index page not set");
+		}
+		return (string)$index_template[0];
+	}
+
+	/**
+	 * @return string Templates folder name
+	 * @throws exceptions\invalidconfig
+	 */
+	public function getTemplatesFolder() {
+		$templates_folder = $this->configXML->xpath(self::CONFIG_XPATH_TEMPLATES_PAGESFOLDER);
+		if(!$templates_folder) {
+			throw new exceptions\invalidconfig("Invalid configuration: templates folder not set");
+		}
+		return (string)$templates_folder[0];
 	}
 
 }
