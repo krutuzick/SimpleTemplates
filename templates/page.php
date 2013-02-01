@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?= $page->getMeta(\simtpl\page::META_KEY_TITLE) ?></title>
-
-	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="description" content="<?= $page->getMeta(\simtpl\page::META_KEY_DESCRIPTION) ?>"/>
+	<meta name="keywords" content="<?= $page->getMeta(\simtpl\page::META_KEY_KEYWORDS) ?>"/>
+	<meta name="robots" content="noindex, nofollow">
+<? foreach($page->getResources(\simtpl\page::RESOURCES_KEY_CSS) as $cssLink) : ?>
+	<link rel="stylesheet" type="link/css" href="<?= $cssLink ?>"/>
+<? endforeach; ?>
+	<script src="http://yandex.st/jquery/1.9.0/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
+<!--	<script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>-->
+<? foreach($page->getResources(\simtpl\page::RESOURCES_KEY_JS) as $jsLink) : ?>
+	<script type="text/javascript" src="<?= $jsLink ?>"></script>
+<? endforeach; ?>
 </head>
-<body id="body">
-	<? include($this->getPageTemplatePath($page)); ?>
-</div>
-</body>
+<body id="body"><? include($this->getPageTemplatePath($page)); ?></body>
 </html>

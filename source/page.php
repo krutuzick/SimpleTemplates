@@ -79,7 +79,7 @@ class page {
 	 */
 	private function parseName() {
 		$mainAttributes = $this->xmlConfig->attributes();
-		$this->name = $mainAttributes[self::CONFIG_ATTRIBUTE_NAME];
+		$this->name = trim($mainAttributes[self::CONFIG_ATTRIBUTE_NAME]);
 		if($this->name == "") {
 			throw new exceptions\source("Page in structure does not have required attribute " . self::CONFIG_ATTRIBUTE_NAME);
 		}
@@ -98,8 +98,8 @@ class page {
 	 */
 	private function parseCaption() {
 		$caption = $this->xmlConfig->xpath(self::CONFIG_CAPTION);
-		if(count($caption) > 0 && (string)$caption[0] != "") {
-			$this->caption = (string)$caption[0];
+		if(count($caption) > 0 && trim((string)$caption[0]) != "") {
+			$this->caption = trim((string)$caption[0]);
 		} else {
 			$this->caption = $this->name;
 		}
@@ -118,6 +118,7 @@ class page {
 			$this->meta['title'] = (count($title) > 0 && (string)$title[0] != "") ? (string)$title[0] : $this->caption;
 			$this->meta['description'] = (count($description) > 0 && (string)$description[0] != "") ? (string)$description[0] : "";
 			$this->meta['keywords'] = (count($keywords) > 0 && (string)$keywords[0] != "") ? (string)$keywords[0] : "";
+			$this->meta = array_map('trim', $this->meta);
 		}
 	}
 
@@ -126,7 +127,7 @@ class page {
 	 */
 	private function parseRedirect() {
 		$redirect = $this->xmlConfig->xpath(self::CONFIG_REDIRECT);
-		$this->redirect = (count($redirect) > 0 && (string)$redirect[0] != "") ? (string)$redirect[0] : false;
+		$this->redirect = (count($redirect) > 0 && trim((string)$redirect[0]) != "") ? trim((string)$redirect[0]) : false;
 	}
 
 	/**
@@ -134,7 +135,7 @@ class page {
 	 */
 	private function parseTemplate() {
 		$template = $this->xmlConfig->xpath(self::CONFIG_TEMPLATE);
-		$this->template = (count($template) > 0 && (string)$template[0] != "") ? (string)$template[0] : $this->getDefaultTemplate();
+		$this->template = (count($template) > 0 && trim((string)$template[0]) != "") ? trim((string)$template[0]) : $this->getDefaultTemplate();
 	}
 
 	/**
@@ -142,7 +143,7 @@ class page {
 	 */
 	private function parseCssClass() {
 		$css_class = $this->xmlConfig->xpath(self::CONFIG_TEMPLATE);
-		$this->cssclass = (count($css_class) > 0 && (string)$css_class[0] != "") ? (string)$css_class[0] : "";
+		$this->cssclass = (count($css_class) > 0 && trim((string)$css_class[0]) != "") ? trim((string)$css_class[0]) : "";
 	}
 
 	/**
@@ -157,8 +158,8 @@ class page {
 				$jsNode = $js[0];
 				$jsNodeItems = $jsNode->xpath(self::CONFIG_RESOURCES_ITEM);
 				foreach($jsNodeItems as $jsNodeItem) {
-					if((string)$jsNodeItem != "") {
-						$this->resources['js'][] = (string)$jsNodeItem;
+					if(trim((string)$jsNodeItem) != "") {
+						$this->resources['js'][] = trim((string)$jsNodeItem);
 					}
 				}
 			}
@@ -167,8 +168,8 @@ class page {
 				$cssNode = $css[0];
 				$cssNodeItems = $cssNode->xpath(self::CONFIG_RESOURCES_ITEM);
 				foreach($cssNodeItems as $cssNodeItem) {
-					if((string)$cssNodeItem != "") {
-						$this->resources['css'][] = (string)$cssNodeItem;
+					if(trim((string)$cssNodeItem) != "") {
+						$this->resources['css'][] = trim((string)$cssNodeItem);
 					}
 				}
 			}
