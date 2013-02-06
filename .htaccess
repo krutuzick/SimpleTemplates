@@ -1,1 +1,26 @@
+AddDefaultCharset UTF-8
+
 RewriteEngine on
+
+# Add trailing slash
+RewriteCond %{REQUEST_URI} !(/$|\.)
+RewriteRule (.*) %{REQUEST_URI}/ [R=302,L]
+
+# All non-resource requests go to index.php
+RewriteCond %{REQUEST_URI} !^\/css\/.*$ [NC]
+RewriteCond %{REQUEST_URI} !^\/js\/.*$ [NC]
+RewriteCond %{REQUEST_URI} !^\/images\/.*$ [NC]
+RewriteCond %{REQUEST_URI} !^\/files\/.*$ [NC]
+RewriteCond %{REQUEST_URI} !^\/resources\/.*$ [NC]
+RewriteRule ^(.*)$ index.php [L,QSA]
+
+# Do not allow to enter resources folder
+RewriteCond %{REQUEST_URI} ^\/resources$ [NC]
+RewriteRule ^(.*)$ index.php [L,QSA]
+
+# Redirect resources to resources folder
+RewriteCond %{REQUEST_URI} ^\/css\/.+$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^\/js\/.+$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^\/images\/.+$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^\/files\/.+$ [NC]
+RewriteRule ^(css|js|images|files)/(.*)$ resources/$1/$2 [L]
