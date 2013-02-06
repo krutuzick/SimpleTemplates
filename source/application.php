@@ -73,4 +73,11 @@ class application {
 		return $handler_factory;
 	}
 
+	/**
+	 * Application root directory path
+	 * @return string path in filesystem
+	 */
+	public static function getRootPath() {
+		return dirname(dirname(__FILE__));
+	}
 }

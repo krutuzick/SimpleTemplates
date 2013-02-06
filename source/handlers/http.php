@@ -1,11 +1,15 @@
 <?php
 namespace simtpl\handlers;
 use simtpl\exceptions;
+use simtpl\libs;
 
 /**
  * Handler for default HTTP request. Renders page based by URL
  */
 class http extends base {
+
+	const RESOURCE_CSS = 'css';
+	const RESOURCE_JS = 'js';
 
 	protected $path_parts = null;
 	protected $page = null;
@@ -120,10 +124,10 @@ class http extends base {
 	protected function getPageTemplatePath($page) {
 		$templates_root = $this->getTemplatesPath();
 		$pages_templates_root = trim($this->configuration->getTemplatesFolder(), " \\/") . "/";
-		$template_file =$templates_root . $pages_templates_root . trim($page->getTemplate(), " \\/");
+		$template_file = $templates_root . $pages_templates_root . trim($page->getTemplate(), " \\/");
 		clearstatcache();
 		if(!file_exists($template_file)) {
-			throw new exceptions\nopage("No template file for page " . $page->getUrl());
+			throw new exceptions\nopage("No template file for page \"" . $page->getUrl() . "\"");
 		}
 		return $template_file;
 	}
@@ -143,4 +147,65 @@ class http extends base {
 		include($templates_index);
 		return ob_get_clean();
 	}
+
+	/**
+	 * Get controls resource html tags with precompile (if autocompile option set in config or compiled file is outdated)
+	 * @param string $type Type of resource - constant from simtpl/handlers/http
+	 * @return string HTML resource tags
+	 * @throws \simtpl\exceptions\filecompile
+	 */
+	protected function getControlsResource($type) {
+		$controls_files = glob(\simtpl\application::getRootPath() . "/resources/{$type}/controls/*.{$type}");
+		$result = "";
+		if($this->configuration->getIsResourcesAutocompress()) {
+			$latest_file = 0;
+			if(count($controls_files) > 0) {
+				$latest_file = max(array_map(function ($file_path) {
+					return file_exists($file_path) ? filemtime($file_path) : 0;
+				}, $controls_files));
+			}
+			if(!file_exists($this->getCompressedControlsResource($type)) || filemtime($this->getCompressedControlsResource($type)) < $latest_file) {
+				$filesCompiller = new libs\filesCompiler($type, $controls_files, $this->getCompressedControlsResource($type));
+				if(!$filesCompiller->compile()) {
+					throw new exceptions\filecompile("Failed to compile controls {$type} resource file");
+				}
+			}
+			$result .= $this->getResourceTag($type, $this->getCompressedControlsResource($type, true));
+		} else {
+			foreach($controls_files as $controls_file) {
+				$href = substr($controls_file, strlen(\simtpl\application::getRootPath() . "/resources") - 1);
+				$result .= $this->getResourceTag($type, $href);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Get compiled resource file name
+	 * @param string $type Type of resource - constant from simtpl/handlers/http
+	 * @param bool $as_url Flag, if true - get http url path to resource file. Otherwise - full path in filesystem
+	 * @return string Compiled resource file url or path
+	 */
+	protected function getCompressedControlsResource($type, $as_url = false) {
+		return $as_url ? "/{$type}/controls.{$type}" : \simtpl\application::getRootPath() . "/resources/{$type}/controls.{$type}";
+	}
+
+	/**
+	 * Generate HTML tag for resource
+	 * @param string $type Type of resource - constant from simtpl/handlers/http
+	 * @param string $url Url of resource
+	 * @return string HTML tag for resource
+	 * @throws \simtpl\exceptions\source
+	 */
+	protected function getResourceTag($type, $url) {
+		switch($type) {
+			case self::RESOURCE_CSS:
+				return "<link rel=\"stylesheet\" type=\"link/css\" href=\"{$url}\"/>";
+			case self::RESOURCE_JS:
+				return "<script type=\"text/javascript\" src=\"{$url}\"></script>";
+			default:
+				throw new \simtpl\exceptions\source("Failed to get resource tag: unknown type {$type}");
+		}
+	}
+
 }

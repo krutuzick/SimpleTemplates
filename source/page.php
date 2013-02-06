@@ -150,6 +150,7 @@ class page {
 	 * Fill resources array from xml config
 	 */
 	private function parseResources() {
+		$this->fillDefaultResources();
 		$resources = $this->xmlConfig->xpath(self::CONFIG_RESOURCES);
 		if(count($resources) != 0) {
 			$resourcesNode = $resources[0];
@@ -159,7 +160,7 @@ class page {
 				$jsNodeItems = $jsNode->xpath(self::CONFIG_RESOURCES_ITEM);
 				foreach($jsNodeItems as $jsNodeItem) {
 					if(trim((string)$jsNodeItem) != "") {
-						$this->resources['js'][] = trim((string)$jsNodeItem);
+						$this->resources[self::RESOURCES_KEY_JS][] = trim((string)$jsNodeItem);
 					}
 				}
 			}
@@ -169,7 +170,7 @@ class page {
 				$cssNodeItems = $cssNode->xpath(self::CONFIG_RESOURCES_ITEM);
 				foreach($cssNodeItems as $cssNodeItem) {
 					if(trim((string)$cssNodeItem) != "") {
-						$this->resources['css'][] = trim((string)$cssNodeItem);
+						$this->resources[self::RESOURCES_KEY_CSS][] = trim((string)$cssNodeItem);
 					}
 				}
 			}
@@ -196,18 +197,15 @@ class page {
 	 * @return string Path to default template file in templates/<config option templates/pagesfolder> folder
 	 */
 	private function getDefaultTemplate() {
-		$path = trim($this->getUrl(), '/');
-		if($path == "") {
-			$path = $this->getName();
-		}
-		return $path . ".php";
+		return trim($this->getUrl(true), '/') . ".php";
 	}
 
 	/**
-	 * @return string URL to this page without domain, with leading and tailing slashes
+	 * @param bool $force_name Flag - force name in url for index page
 	 * @throws exceptions\source
+	 * @return string URL to this page without domain, with leading and tailing slashes
 	 */
-	public function getUrl() {
+	public function getUrl($force_name = false) {
 		if(empty($this->url)) {
 			$this->url = "/";
 			foreach($this->parents as $parent) {
@@ -216,6 +214,9 @@ class page {
 				} else {
 					throw new exceptions\source("One of page's {$this->getName()} parents is not object of page");
 				}
+			}
+			if(!$this->getIndex() || $force_name) {
+				$this->url .= $this->getName() . "/";
 			}
 		}
 		return $this->url;
@@ -238,7 +239,7 @@ class page {
 	/**
 	 * @return string Extra css classes for menu item for this page
 	 */
-	public function getCssclass() {
+	public function getCssClass() {
 		return $this->cssclass;
 	}
 
@@ -307,6 +308,24 @@ class page {
 	 */
 	public function getTemplate() {
 		return $this->template;
+	}
+
+	/**
+	 * Fill resources that connects by default (if such files are exists)
+	 * Default file for css: /resources/css/sections/<url_path_to_page>.css
+	 * Default file for js: /resources/js/sections/<url_path_to_page>.js
+	 * @throws exceptions\source
+	 */
+	protected function fillDefaultResources() {
+		$cssPath = "/css/sections/" . trim($this->getUrl(true) . ".css");
+		$jsPath = "/js/sections/" . trim($this->getUrl(true) . ".js");
+		clearstatcache();
+		if(file_exists(application::getRootPath() . "/resources{$cssPath}")) {
+			$this->resources[self::RESOURCES_KEY_CSS][] = $cssPath;
+		}
+		if(file_exists(application::getRootPath() . "/resources{$jsPath}")) {
+			$this->resources[self::RESOURCES_KEY_JS][] = $jsPath;
+		}
 	}
 
 }
