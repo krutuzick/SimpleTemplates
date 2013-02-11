@@ -8,6 +8,7 @@ class page {
 	const CONFIG_NODE_NAME = 'page';
 	const CONFIG_ATTRIBUTE_NAME = 'name';
 	const CONFIG_ATTRIBUTE_INDEX = 'index';
+	const CONFIG_ATTRIBUTE_MENUHIDDEN = 'menuhidden';
 	const CONFIG_META = 'meta';
 	const CONFIG_META_TITLE = 'title';
 	const CONFIG_META_DESCRIPTION = 'description';
@@ -35,6 +36,7 @@ class page {
 
 	protected $name;
 	protected $index = false;
+	protected $menuhidden = false;
 	protected $meta = array('title' => '', 'description' => '', 'keywords' => '');
 	protected $caption;
 	protected $redirect = false;
@@ -64,6 +66,7 @@ class page {
 	protected function parseConfig() {
 		$this->parseName();
 		$this->parseIndex();
+		$this->parseMenuHidden();
 		$this->parseCaption();
 		$this->parseMeta();
 		$this->parseRedirect();
@@ -91,6 +94,14 @@ class page {
 	private function parseIndex() {
 		$mainAttributes = $this->xmlConfig->attributes();
 		$this->index = (intval($mainAttributes[self::CONFIG_ATTRIBUTE_INDEX]) == 1);
+	}
+
+	/**
+	 * Define whether this page is hidden from menu (from xml config)
+	 */
+	private function parseMenuHidden() {
+		$mainAttributes = $this->xmlConfig->attributes();
+		$this->menuhidden = (intval($mainAttributes[self::CONFIG_ATTRIBUTE_MENUHIDDEN]) == 1);
 	}
 
 	/**
@@ -248,6 +259,13 @@ class page {
 	 */
 	public function getIndex() {
 		return $this->index;
+	}
+
+	/**
+	 * @return bool Whether this page is hidden from menu
+	 */
+	public function getHiddenFromMenu() {
+		return $this->menuhidden;
 	}
 
 	/**
