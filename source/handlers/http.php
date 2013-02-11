@@ -155,7 +155,7 @@ class http extends base {
 	 * @throws \simtpl\exceptions\filecompile
 	 */
 	protected function getControlsResource($type) {
-		$controls_files = glob(\simtpl\application::getRootPath() . "/resources/{$type}/controls/*.{$type}");
+		$controls_files = $this->getResourceFilesRecurrent($type);
 		$result = "";
 		if($this->configuration->getIsResourcesAutocompress()) {
 			$latest_file = 0;
@@ -178,6 +178,28 @@ class http extends base {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Get all resource file paths
+	 * @param string $type Type of files (css, js)
+	 * @param string $folder Folder to search. If empty - default folder will be searched
+	 * @return array Array of full file paths
+	 */
+	protected function getResourceFilesRecurrent($type, $folder = '') {
+		$files = array();
+		if($folder == '') {
+			$folder = \simtpl\application::getRootPath() . "/resources/{$type}/controls";
+		}
+		$files_in_folder = glob($folder . "/*");
+		foreach($files_in_folder as $file_path) {
+			if(is_dir($file_path)) {
+				$files = array_merge($files, $this->getResourceFilesRecurrent($type, rtrim($file_path, "\\/ ")));
+			} elseif(preg_match("/^.+\.{$type}$/i", $file_path)) {
+				$files[] = $file_path;
+			}
+		}
+		return $files;
 	}
 
 	/**
