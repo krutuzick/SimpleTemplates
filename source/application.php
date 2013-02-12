@@ -31,7 +31,7 @@ class application {
 		if(strpos($class_name, __NAMESPACE__) === 0) {
 			$class_name = substr($class_name, strlen(__NAMESPACE__));
 		}
-		$class_path = dirname(__FILE__)  . "/" . trim(str_replace("\\", "/", $class_name), "/") . ".php";
+		$class_path = dirname(__FILE__) . "/" . trim(str_replace("\\", "/", $class_name), "/") . ".php";
 		if(file_exists($class_path)) {
 			require $class_path;
 			return true;
@@ -52,7 +52,7 @@ class application {
 			}
 			$this->handler_factory = new $handler_factory_class($this->configuration);
 			if($this->handler_factory instanceof interfaces\Ihandler_factory == false) {
-				throw new exceptions\source("$handler_factory_class not instance of " . __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
+				throw new exceptions\source("$handler_factory_class not instance of " . __NAMESPACE__ . "\\interfaces\\Ihandler_factory");
 			}
 		}
 

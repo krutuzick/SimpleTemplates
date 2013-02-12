@@ -54,11 +54,12 @@ class factory implements interfaces\Ihandler_factory {
 	 */
 	protected function getRequestType() {
 		if(is_null($this->request_type)) {
-			$this->request_type = self::REQUEST_TYPE_HTTP;
 			if($this->isConsoleRequest()) {
 				$this->request_type = self::REQUEST_TYPE_CONSOLE;
 			} elseif($this->isApiRequest()) {
 				$this->request_type = self::REQUEST_TYPE_API;
+			} else {
+				$this->request_type = self::REQUEST_TYPE_HTTP;
 			}
 		}
 		return $this->request_type;
