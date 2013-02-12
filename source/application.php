@@ -9,34 +9,18 @@ class application {
 	protected $configuration;
 
 	/**
-	 * @var array Application instances collection
+	 * @var \simtpl\handlers\factory
 	 */
-	protected static $instances = array();
+	protected $handler_factory;
 
 	/**
-	 * @param string $config_path
-	 * @return application
+	 * @param string $config_path Path to config.xml
 	 */
-	public static function getInstance($config_path) {
-		if(!isset(self::$instances[$config_path])) {
-			self::$instances[$config_path] = new self($config_path);
-		}
-		return self::$instances[$config_path];
-	}
-
-	/**
-	 * Overloaded protected constructor - singleton design pattern
-	 */
-	protected function __construct($config_path) {
+	public function __construct($config_path) {
 		clearstatcache();
 		\spl_autoload_register(__NAMESPACE__ . '\application::class_loader');
 		$this->configuration = new configuration($config_path);
 	}
-
-	/**
-	 * Overloaded clone method - singleton design pattern
-	 */
-	protected function __clone() {}
 
 	/**
 	 * Class autoloader
@@ -58,19 +42,21 @@ class application {
 	/**
 	 * @return \simtpl\interfaces\Ihandler_factory Handlers factory
 	 * @throws exceptions\source
-	 * @throws exceptions\invalidconfig
 	 */
 	public function getHandlerFactory() {
-		$handler_factory_name = $this->configuration->getHandlerFactoryName();
-		$handler_factory_class = __NAMESPACE__ . "\\handlers\\" . $handler_factory_name;
-		if(!class_exists($handler_factory_class)) {
-			throw new exceptions\source("Handler factory class ({$handler_factory_class}) not exists");
+		if($this->handler_factory instanceof interfaces\Ihandler_factory == false) {
+			$handler_factory_name = $this->configuration->getHandlerFactoryName();
+			$handler_factory_class = __NAMESPACE__ . "\\handlers\\" . $handler_factory_name;
+			if(!class_exists($handler_factory_class)) {
+				throw new exceptions\source("Handler factory class ({$handler_factory_class}) not exists");
+			}
+			$this->handler_factory = new $handler_factory_class($this->configuration);
+			if($this->handler_factory instanceof interfaces\Ihandler_factory == false) {
+				throw new exceptions\source("$handler_factory_class not instance of " . __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
+			}
 		}
-		$handler_factory = $handler_factory_class::getInstance($this->configuration);
-		if($handler_factory instanceof interfaces\Ihandler_factory == false) {
-			throw new exceptions\source("$handler_factory_class::getInstance() does not returns instance of " . __NAMESPACE__ ."\\interfaces\\Ihandler_factory");
-		}
-		return $handler_factory;
+
+		return $this->handler_factory;
 	}
 
 	/**

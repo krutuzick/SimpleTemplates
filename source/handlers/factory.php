@@ -22,16 +22,12 @@ class factory implements interfaces\Ihandler_factory {
 	 */
 	protected $configuration = null;
 
-	protected static $instance = null;
-
 	/**
 	 * @param \simtpl\configuration $configuration Configuration object
 	 */
-	protected function __construct($configuration) {
+	public function __construct($configuration) {
 		$this->configuration = $configuration;
 	}
-
-	protected function __clone() {}
 
 	/**
 	 * @param string $type Request type name - constant from \simtpl\handlers\factory
@@ -94,14 +90,4 @@ class factory implements interfaces\Ihandler_factory {
 		return false;
 	}
 
-	/**
-	 * @param \simtpl\configuration $configuration
-	 * @return \simtpl\handlers\factory
-	 */
-	public static function getInstance($configuration) {
-		if(self::$instance instanceof interfaces\Ihandler_factory == false) {
-			self::$instance = new self($configuration);
-		}
-		return self::$instance;
-	}
 }
