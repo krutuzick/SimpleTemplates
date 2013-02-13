@@ -222,7 +222,7 @@ class http extends base {
 	protected function getResourceTag($type, $url) {
 		switch($type) {
 			case self::RESOURCE_CSS:
-				return "<link rel=\"stylesheet\" type=\"link/css\" href=\"{$url}\"/>";
+				return "<link rel=\"stylesheet\" href=\"{$url}\"/>";
 			case self::RESOURCE_JS:
 				return "<script type=\"text/javascript\" src=\"{$url}\"></script>";
 			default:

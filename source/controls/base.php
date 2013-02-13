@@ -11,7 +11,7 @@ class base {
 	 * @return string Full path to template file
 	 */
 	protected function getTemplatePath() {
-		$relative_path = str_replace("\\", "/", substr(__CLASS__, strlen("\\simtpl\\") - 1));
+		$relative_path = str_replace("\\", "/", substr(get_class($this), strlen("\\simtpl\\") - 1));
 		return \simtpl\application::getRootPath() . "/templates/{$relative_path}.php";
 	}
 
