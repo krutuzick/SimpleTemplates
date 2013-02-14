@@ -11,10 +11,10 @@ try {
 	echo $handler->handle();
 } catch(exceptions\base $e) {
 	// default Exception handler for customized exceptions
-	echo $e->getFancyMessage();
+	echo "<pre>{$e->getFancyMessage()}</pre>";
 } catch(\Exception $e) {
 	// default Exception handler
-	echo $e->getMessage();
+	echo "<pre>{$e->getMessage()}</pre>";
 }
 
 /**
