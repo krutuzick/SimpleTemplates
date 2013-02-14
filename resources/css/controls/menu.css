@@ -1,0 +1,9 @@
+.simtpl-menu .nav > li.dropdown > .dropdown-menu {
+	margin-top: 0px;
+}
+.simtpl-menu li.dropdown:hover > ul.dropdown-menu {
+	display: block;
+}
+.simtpl-menu a.menu:after, .dropdown-toggle:after {
+	display: block;
+}
