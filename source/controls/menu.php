@@ -12,6 +12,7 @@ class menu extends base {
 	protected $brand;
 	protected $separators = false;
 	protected $inverted_color = false;
+	protected $fixed_top_style = true;
 
 	public function __construct(&$structure, &$current_page) {
 		if(is_array($structure)) {
@@ -26,6 +27,7 @@ class menu extends base {
 		} else {
 			throw new exceptions\source("Incorrect parameter 'current_page' for control 'menu'");
 		}
+		$this->attributes['class'] = array('simtpl-menu', 'navbar');
 	}
 
 	public function setBrandLink($title, $url) {
@@ -40,9 +42,9 @@ class menu extends base {
 		$this->inverted_color = true;
 	}
 
-
-
-
+	public function disableFixedTopStyle() {
+		$this->fixed_top_style = false;
+	}
 
 }
 

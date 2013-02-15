@@ -1,9 +1,17 @@
-<style>
+<?
+if($this->inverted_color) {
+	$this->setAttributes(array('class' =>'navbar-inverse'));
+}
+if($this->fixed_top_style) {
+	$this->setAttributes(array('class' =>'navbar-fixed-top'));
+?><style>
 	body {
 		padding-top: 40px;
 	}
-</style>
-<div class="simtpl-menu navbar navbar-fixed-top<?= ($this->inverted_color) ? " navbar-inverse" : "";?>">
+</style><?
+}
+?>
+<div <?= $this->getAttributesHtml(); ?>>
 	<div class="navbar-inner">
 		<div class="container">
 			<? if(is_array($this->brand)) {?>
