@@ -7,7 +7,7 @@ use simtpl\exceptions;
  */
 class menu extends base {
 
-	protected $structure = array();
+	protected $items = array();
 	protected $current_page;
 	protected $brand;
 	protected $separators = false;
@@ -15,19 +15,26 @@ class menu extends base {
 	protected $fixed_top_style = true;
 
 	public function __construct(&$structure, &$current_page) {
-		if(is_array($structure)) {
-			$this->structure = $structure;
-		} elseif($structure instanceof \simtpl\page) {
-			$this->structure = array($structure);
-		} else {
-			throw new exceptions\source("Incorrect parameter 'structure' for control 'menu'");
-		}
 		if($current_page instanceof \simtpl\page) {
 			$this->current_page = $current_page;
 		} else {
 			throw new exceptions\source("Incorrect parameter 'current_page' for control 'menu'");
 		}
-		$this->attributes['class'] = array('simtpl-menu', 'navbar');
+		$this->initMenuItems($structure);
+		$this->addAttributes(array('class' => 'simtpl-menu'));
+		$this->addAttributes(array('class' => 'navbar'));
+	}
+
+	protected function initMenuItems(&$structure) {
+		$pages_structure = is_array($structure) ? $structure : array($structure);
+		foreach($pages_structure as &$page) {
+			if($page->getHiddenFromMenu()) continue;
+			$menu_item = new \simtpl\controls\menu\item($page);
+			if($page === $this->current_page || in_array($page, $this->current_page->getParents(), true)) {
+				$menu_item->addAttributes(array('class' => 'active'));
+			}
+			$this->items[] = $menu_item;
+		}
 	}
 
 	public function setBrandLink($title, $url) {

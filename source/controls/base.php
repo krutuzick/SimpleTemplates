@@ -9,13 +9,13 @@ class base {
 	/**
 	 * @var array Html attributes for a wrapper tag of control
 	 */
-	protected $attributes = array();
+	private $attributes = array();
 
 	/**
 	 * Set html attributes for a wrapper tag of control
 	 * @param array $attr
 	 */
-	protected function setAttributes($attr) {
+	public function addAttributes($attr) {
 		foreach($attr as $attr_name => $attr_value) {
 			if(!isset($this->attributes[$attr_name])) {
 				$this->attributes[$attr_name] = array();
