@@ -1,0 +1,18 @@
+/* Firefox & Opera input height bugfix */
+input.simtpl-button.btn {
+	height: 30px;
+}
+input.simtpl-button.btn.btn-mini {
+	height: 22px;
+}
+input.simtpl-button.btn.btn-large {
+	height: 44px;
+}
+input.simtpl-button.btn.btn-small {
+	height: 26px;
+}
+/*Fix for caret borders after input*/
+.btn-group > .simtpl-button.btn.btn-link + .simtpl-button.dropdown-toggle {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}

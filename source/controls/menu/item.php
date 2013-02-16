@@ -32,7 +32,7 @@ class item extends \simtpl\controls\base {
 
 	protected function getSubmenu(&$children) {
 		if(count($children) == 0) return null;
-		$submenu = new \simtpl\controls\dropdown(true);
+		$submenu = new \simtpl\controls\dropdown(array(), true);
 		foreach($children as &$childPage) {
 			if($childPage->getHiddenFromMenu()) continue;
 			$child_item = new \simtpl\controls\dropdown\item($childPage->getCaption(), $childPage->getUrl(), $this->getSubmenu($childPage->getChildren()));
