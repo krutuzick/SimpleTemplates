@@ -147,16 +147,16 @@ class icon extends base {
 	const ICON_BRIEFCASE = "icon-briefcase";
 	const ICON_FULLSCREEN = "icon-fullscreen";
 
-	protected $icon_type;
-	protected $white = false;
-
 	/**
 	 * @param string $icon_type Icon type - constant from \simtpl\controls\icon
 	 * @param bool $white Flag - should it be white icon (true) or black (false, by default)
 	 */
 	public function __construct($icon_type, $white = false) {
-		$this->icon_type = $icon_type;
-		$this->white = $white;
+		$this->addAttributes(array('class' => 'simtpl-icon'));
+		$this->addAttributes(array('class' => $icon_type));
+		if($white) {
+			$this->addAttributes(array('class' => 'icon-white'));
+		}
 	}
 
 

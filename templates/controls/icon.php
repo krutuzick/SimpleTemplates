@@ -1,1 +1,1 @@
-<i class="<?= ($this->white) ? "{$this->icon_type} icon-white" : $this->icon_type; ?>"></i>
+<i <?= $this->getAttributesHtml(); ?>></i>

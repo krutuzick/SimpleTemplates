@@ -11,8 +11,9 @@ class dropdown extends base {
 	protected $hide_if_empty = false;
 
 	public function __construct($hide_if_empty = false) {
+		$this->addAttributes(array('class' => 'simtpl-dropdown'));
 		$this->addAttributes(array(
-			'class' => 'simtpl-dropdown dropdown-menu',
+			'class' => 'dropdown-menu',
 			'role' => 'menu'
 		));
 		$this->hide_if_empty = $hide_if_empty;
