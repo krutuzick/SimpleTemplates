@@ -1,5 +1,5 @@
 <? if($this->is_divider) { ?>
-<li class="divider"></li>
+<li class="divider">&nbsp;</li>
 <?
 } else { ?>
 <li <?= $this->getAttributesHtml(); ?>>

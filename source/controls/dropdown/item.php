@@ -16,12 +16,14 @@ class item extends \simtpl\controls\base {
 	 * @param string $link
 	 * @param \simtpl\controls\dropdown|null $submenu
 	 * @param bool $disabled
+	 * @param bool $is_divider
 	 * @throws \simtpl\exceptions\source
 	 */
-	public function __construct($caption, $link = "javascript:void(0)", &$submenu = null, $disabled = false) {
+	public function __construct($caption, $link = "javascript:void(0)", $submenu = null, $disabled = false, $is_divider = false) {
 		$this->caption = trim($caption);
 		$this->link = trim($link);
 		$this->disabled = $disabled;
+		$this->is_divider = $is_divider;
 		if($submenu instanceof \simtpl\controls\dropdown) {
 			$this->submenu = $submenu;
 			$this->addAttributes(array('class' => 'dropdown-submenu'));

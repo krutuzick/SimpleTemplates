@@ -9,18 +9,21 @@ class dropdown extends base {
 
 	protected $items = array();
 	protected $hide_if_empty = false;
+	protected $visible_initial = false;
 
 	/**
 	 * @param array $items Array of \simtpl\controls\dropdown\item
 	 * @param bool $hide_if_empty Flag - do not render control if it has no items
+	 * @param bool $visible_initial Flag - set visible on creation, not only by trigger
 	 */
-	public function __construct($items = array(), $hide_if_empty = false) {
+	public function __construct($items = array(), $hide_if_empty = false, $visible_initial = false) {
 		$this->addAttributes(array('class' => 'simtpl-dropdown'));
 		$this->addAttributes(array(
 			'class' => 'dropdown-menu',
 			'role' => 'menu'
 		));
 		$this->hide_if_empty = $hide_if_empty;
+		$this->visible_initial = $visible_initial;
 		$this->addItems($items);
 	}
 
@@ -47,6 +50,13 @@ class dropdown extends base {
 		foreach($items as $item) {
 			$this->addItem($item);
 		}
+	}
+
+	/**
+	 * Set dropdown visible on creation, not by trigger only
+	 */
+	public function setVisible() {
+		$this->visible_initial = true;
 	}
 }
 
