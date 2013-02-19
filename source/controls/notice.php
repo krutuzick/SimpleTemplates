@@ -2,7 +2,7 @@
 namespace simtpl\controls;
 
 /**
- * @todo phpDoc
+ * Colored (closable optionally) block with text. Useful for different type of notices and messages.
  */
 class notice extends base {
 	const COLOR_YELLOW = '';
