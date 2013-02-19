@@ -10,6 +10,7 @@
 
 	<link rel="stylesheet" href="/css/normalize.css"/>
 	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="/css/simtpl-common.css"/>
 	<?= $this->getControlsResource(\simtpl\handlers\http::RESOURCE_CSS); ?>
 <? foreach($page->getResources(\simtpl\page::RESOURCES_KEY_CSS) as $cssLink) { ?>
 	<link rel="stylesheet" href="<?= $cssLink ?>"/>
@@ -30,7 +31,8 @@
 	$menu = new \simtpl\controls\menu($this->configuration->getStructure(), $this->page);
 	echo $menu;
 ?>
-	<div class="container">
+	<div class="simtpl-content-body container">
+	<? echo new \simtpl\controls\breadcrumbs($page, "Главная", new \simtpl\controls\icon(\simtpl\controls\icon::ICON_HOME), true, "/"); ?>
 	<? include($this->getPageTemplatePath($page)); ?>
 	</div>
 </body>
