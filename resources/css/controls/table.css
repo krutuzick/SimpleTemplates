@@ -1,0 +1,4 @@
+.simtpl-table tr.simtpl-row-noborder > td,
+.simtpl-table tr.simtpl-row-noborder > th {
+	border: none;
+}
