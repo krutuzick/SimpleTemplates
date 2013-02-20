@@ -12,6 +12,7 @@ class notice extends base {
 
 	protected $content;
 	protected $closable;
+	protected $color;
 
 	/**
 	 * @param string $content HTML content of the notice
@@ -22,10 +23,13 @@ class notice extends base {
 		$this->addAttributes(array('class' => 'simtpl-notice'));
 		$this->addAttributes(array('class' => 'alert'));
 		$this->addAttributes(array('class' => 'alert-block'));
-		$this->addAttributes(array('class' => $color));
 		$this->content = $content;
 		$this->color = $color;
 		$this->closable = $closable;
+	}
+
+	public function setColor($color) {
+		$this->color = $color;
 	}
 
 }
