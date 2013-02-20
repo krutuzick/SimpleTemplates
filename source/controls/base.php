@@ -33,6 +33,11 @@ class base {
 		$attributes_html = "";
 		foreach($this->attributes as $attr_name => $attr_values) {
 			$attr_values = is_array($attr_values) ? $attr_values : array($attr_values);
+			foreach($attr_values as $i => $attr_value) {
+				if($attr_value == '') {
+					unset($attr_values[$i]);
+				}
+			}
 			$value_string = join(' ', $attr_values);
 			$value_string = str_replace($value_quotes, $value_inner_quotes, $value_string);
 			$attributes_html .= $attr_name . "=" . $value_quotes . $value_string . $value_quotes . " ";
