@@ -5,6 +5,7 @@ use simtpl\exceptions;
 require_once(dirname(__FILE__) . "/source/application.php");
 
 //hotfix-1
+//hotfix-2
 
 try {
 	$application = new application(dirname(__FILE__) . "/config/config.xml");
