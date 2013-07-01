@@ -55,7 +55,7 @@ class http extends base {
 	}
 
 	/**
-	 * @param array $pages Array of \simtpl\page objects
+	 * @param \simtpl\page[] $pages Array of \simtpl\page objects
 	 * @return \simtpl\page|null Default page object
 	 */
 	protected function getDefaultPage(&$pages) {
@@ -74,7 +74,7 @@ class http extends base {
 	}
 
 	/**
-	 * @param array $pages Structure - array of \simtpl\page objects
+	 * @param \simtpl\page[] $pages Structure - array of \simtpl\page objects
 	 * @param array $path_parts Array of path parts
 	 * @return \simtpl\page|null Page object or null if not found
 	 */

@@ -25,7 +25,7 @@ class configuration {
 	protected $configXML;
 
 	/**
-	 * @var array Array of \SimpleXMLElement representing pages tree structure
+	 * @var \SimpleXMLElement[] Array of \SimpleXMLElement representing pages tree structure
 	 */
 	protected $structure = null;
 
@@ -93,7 +93,7 @@ class configuration {
 	}
 
 	/**
-	 * @return array Array of \simtpl\page representing pages tree structure
+	 * @return \simtpl\page[] Array of \simtpl\page representing pages tree structure
 	 * @throws exceptions\invalidconfig
 	 */
 	public function getStructure() {

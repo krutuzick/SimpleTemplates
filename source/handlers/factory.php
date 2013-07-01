@@ -4,7 +4,7 @@ use simtpl\interfaces;
 use simtpl\exceptions;
 
 /**
- * @todo write phpDoc
+ * Factory for detecting type of request and getting correct handler object 
  */
 class factory implements interfaces\Ihandler_factory {
 

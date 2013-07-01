@@ -2,7 +2,7 @@
 namespace simtpl\handlers;
 
 /**
- * @todo phpDoc
+ * Abstract class of request handler
  */
 abstract class base {
 	/**
