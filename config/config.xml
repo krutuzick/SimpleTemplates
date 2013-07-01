@@ -65,9 +65,13 @@
 				</page>
 				<page name="demo">
 					<caption>Примеры</caption>
+					<redirect>menu</redirect>
 					<children>
 						<page name="menu">
 							<caption>Меню</caption>
+						</page>
+						<page name="label">
+							<caption>Лейбы</caption>
 						</page>
 					</children>
 				</page>
